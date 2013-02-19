@@ -36,7 +36,7 @@ namespace MetaData
         public static void SendEmailToLDW(string title, string msg)
         {
 
-            SendEmail(title, msg, "@hotmail.com");
+            SendEmail(title, msg, "ldw_weit@hotmail.com");
         }
 
     }

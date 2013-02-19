@@ -52,7 +52,7 @@ namespace MetaData
             {
                 _fileWatcher.EnableRaisingEvents = true;
             }
-            if (!Helper.IsJingle(song)) {
+            if (!Helper.IsJingle(song, txtJingles.Text)) {
                 myDAL.InsertSong(song);
                 updateMetadata((song));
             }
@@ -91,8 +91,20 @@ namespace MetaData
             
         }
 
+        private void checkConfigOk()
+        {
+            if (txtAdres.Text.Trim().Equals("") || txtStream.Text.Trim().Equals("") || txtUser.Text.Trim().Equals("") || txtPass.Text.Trim().Equals(""))
+            {
+                lblDateTime.Text = "Can not start. Configuration missing...";
+                ckSongFromZaraToIcecast.Checked = false;
+            }
+            else
+                lblDateTime.Text = "";
+        }
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            checkConfigOk();
             if (ckSongFromZaraToIcecast.Checked)
             {
                 if(File.Exists(txtZaraPath.Text))

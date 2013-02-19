@@ -53,16 +53,18 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnSendMail = new System.Windows.Forms.Button();
+            this.txtMailDestination = new System.Windows.Forms.TextBox();
             this.btnShowPlayList = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimeEnd = new System.Windows.Forms.DateTimePicker();
             this.dateTimeStart = new System.Windows.Forms.DateTimePicker();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.txtMailDestination = new System.Windows.Forms.TextBox();
-            this.btnSendMail = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtJingles = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -74,8 +76,9 @@
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -183,7 +186,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(629, 343);
+            this.tabControl1.Size = new System.Drawing.Size(543, 420);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -193,7 +196,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(621, 317);
+            this.tabPage1.Size = new System.Drawing.Size(535, 394);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Song2Icecast";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -251,12 +254,13 @@
             // 
             // tabConfig
             // 
+            this.tabConfig.Controls.Add(this.groupBox4);
             this.tabConfig.Controls.Add(this.groupBox2);
             this.tabConfig.Controls.Add(this.groupBox1);
             this.tabConfig.Location = new System.Drawing.Point(4, 22);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfig.Size = new System.Drawing.Size(621, 317);
+            this.tabConfig.Size = new System.Drawing.Size(535, 394);
             this.tabConfig.TabIndex = 1;
             this.tabConfig.Text = "Configuration";
             this.tabConfig.UseVisualStyleBackColor = true;
@@ -266,7 +270,7 @@
             this.groupBox2.Controls.Add(this.txtZaraPath);
             this.groupBox2.Location = new System.Drawing.Point(19, 165);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(393, 76);
+            this.groupBox2.Size = new System.Drawing.Size(393, 64);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "ZaraStudio: current song txt-file";
@@ -322,6 +326,37 @@
             this.panel1.Size = new System.Drawing.Size(621, 83);
             this.panel1.TabIndex = 1;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.btnSendMail);
+            this.groupBox5.Controls.Add(this.txtMailDestination);
+            this.groupBox5.Location = new System.Drawing.Point(168, 31);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(326, 49);
+            this.groupBox5.TabIndex = 5;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "E-mail below playlist";
+            // 
+            // btnSendMail
+            // 
+            this.btnSendMail.Enabled = false;
+            this.btnSendMail.Location = new System.Drawing.Point(184, 19);
+            this.btnSendMail.Name = "btnSendMail";
+            this.btnSendMail.Size = new System.Drawing.Size(75, 23);
+            this.btnSendMail.TabIndex = 1;
+            this.btnSendMail.Text = "Send e-mail";
+            this.btnSendMail.UseVisualStyleBackColor = true;
+            this.btnSendMail.Click += new System.EventHandler(this.btnSendMail_Click);
+            // 
+            // txtMailDestination
+            // 
+            this.txtMailDestination.Location = new System.Drawing.Point(7, 19);
+            this.txtMailDestination.Name = "txtMailDestination";
+            this.txtMailDestination.Size = new System.Drawing.Size(170, 20);
+            this.txtMailDestination.TabIndex = 0;
+            this.txtMailDestination.Text = "recipient@hotmail.com";
+            this.txtMailDestination.TextChanged += new System.EventHandler(this.txtMailDestination_TextChanged);
+            // 
             // btnShowPlayList
             // 
             this.btnShowPlayList.Location = new System.Drawing.Point(11, 31);
@@ -373,47 +408,39 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.btnSendMail);
-            this.groupBox5.Controls.Add(this.txtMailDestination);
-            this.groupBox5.Location = new System.Drawing.Point(168, 31);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(326, 49);
-            this.groupBox5.TabIndex = 5;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "E-mail below playlist";
-            // 
-            // txtMailDestination
-            // 
-            this.txtMailDestination.Location = new System.Drawing.Point(7, 19);
-            this.txtMailDestination.Name = "txtMailDestination";
-            this.txtMailDestination.Size = new System.Drawing.Size(170, 20);
-            this.txtMailDestination.TabIndex = 0;
-            this.txtMailDestination.Text = "recipient@hotmail.com";
-            this.txtMailDestination.TextChanged += new System.EventHandler(this.txtMailDestination_TextChanged);
-            // 
-            // btnSendMail
-            // 
-            this.btnSendMail.Enabled = false;
-            this.btnSendMail.Location = new System.Drawing.Point(184, 19);
-            this.btnSendMail.Name = "btnSendMail";
-            this.btnSendMail.Size = new System.Drawing.Size(75, 23);
-            this.btnSendMail.TabIndex = 1;
-            this.btnSendMail.Text = "Send e-mail";
-            this.btnSendMail.UseVisualStyleBackColor = true;
-            this.btnSendMail.Click += new System.EventHandler(this.btnSendMail_Click);
-            // 
             // timer1
             // 
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.txtJingles);
+            this.groupBox4.Location = new System.Drawing.Point(19, 236);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(393, 155);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Words to filter out (jingles and live show, seperated by comma)";
+            // 
+            // txtJingles
+            // 
+            this.txtJingles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtJingles.Location = new System.Drawing.Point(3, 16);
+            this.txtJingles.Multiline = true;
+            this.txtJingles.Name = "txtJingles";
+            this.txtJingles.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtJingles.Size = new System.Drawing.Size(387, 136);
+            this.txtJingles.TabIndex = 0;
+            this.txtJingles.Text = "jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Sc" +
+    "orpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,http://10.48." +
+    "13.184:8005";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 343);
+            this.ClientSize = new System.Drawing.Size(543, 420);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Update song metadata";
@@ -434,9 +461,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -477,6 +506,8 @@
         private System.Windows.Forms.Button btnSendMail;
         private System.Windows.Forms.TextBox txtMailDestination;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox txtJingles;
     }
 }
 

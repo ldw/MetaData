@@ -76,10 +76,14 @@ namespace MetaData
             
             return song;
         }
-        public static bool IsJingle(string song)
+        /// <summary>
+        /// Check if jingle or live show
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public static bool IsJingle(string song, string jingles)
         {
-            string value = ConfigurationManager.AppSettings["jingles"];
-            string[] splitString = value.Split(',');
+            string[] splitString = jingles.Split(',');
             foreach (string s in splitString)
             {
                 if (song.Contains(s))
