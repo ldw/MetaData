@@ -10,7 +10,8 @@ namespace MetaData
 {
     public static class Helper
     {
-        public static string DGVtoString(DataGridView dgv, string delimiter)
+        public const string STANDARD_MSG = "Klik hier om te luisteren.";
+        public static string DgVtoString(DataGridView dgv, string delimiter)
         {
             StringBuilder sb = new StringBuilder();
             foreach (DataGridViewRow row in dgv.Rows)
@@ -65,17 +66,30 @@ namespace MetaData
         }
         public static string GetSongFromZaraTxt(string @zarapath)
         {
-            string musicfile = File.ReadAllText(@zarapath);
-            musicfile = musicfile.Replace("\n", "").Replace("\r", "");
+            try
+            {
+                string musicfile = File.ReadAllText(@zarapath, Encoding.Default);
+                musicfile = musicfile.Replace("\n", "").Replace("\r", "");
+                if (musicfile.Contains("~"))
+                {
+                    musicfile = musicfile.Remove(musicfile.IndexOf("~"));
+                }
 
-
-            return musicfile;
+                return musicfile;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+            
         }
+/*
         private static string PrettyUpSongName(string song)
         { 
             
             return song;
         }
+*/
         /// <summary>
         /// Check if jingle or live show
         /// </summary>
@@ -83,6 +97,9 @@ namespace MetaData
         /// <returns></returns>
         public static bool IsJingle(string song, string jingles)
         {
+            if (song.Length < 8)
+                return true;
+
             string[] splitString = jingles.Split(',');
             foreach (string s in splitString)
             {
@@ -90,6 +107,12 @@ namespace MetaData
                     return true;
             }
             return false;
+        }
+
+        public  static  bool IsIpOrNumber(string song)
+        {
+            int number;
+            return Int32.TryParse(song.Replace(".", ""), out number);
         }
 
     }

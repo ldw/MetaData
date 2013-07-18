@@ -12,8 +12,8 @@ namespace MetaData
         {
             //write in txt log file
             ErrorLog.LogError(error);
-            //send a mail (last error mail was more than 2 hours ago)
-            if ((DateTime.Now - LastErrorSend).TotalHours > 2)
+            //send a mail (last error mail was more than 6 hours ago)
+            if ((DateTime.Now - LastErrorSend).TotalHours > 6)
             {
                 SendMail.SendEmailToLDW("ERROR", error);
                 LastErrorSend = DateTime.Now;
@@ -25,9 +25,6 @@ namespace MetaData
             SendMail.SendEmailToLDW("ERROR", error);
             LastErrorSend = DateTime.Now;
         }
-        public static void LogErrorInTXT(string error)
-        {
-            LogErrorInTXT(error);
-        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace MetaData
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential("icecastserverscorpio@gmail.com", "")
+                Credentials = new NetworkCredential("@gmail.com", "")
             };
 
             smtp.Send(message);

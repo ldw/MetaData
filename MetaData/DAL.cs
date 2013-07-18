@@ -9,7 +9,7 @@ namespace MetaData
 {
     public class DAL
     {
-        public void CreateDBFile()
+        public void CreateDbFile()
         {
             if (!File.Exists("playlist.db"))
             {
@@ -35,13 +35,14 @@ namespace MetaData
 
         public DataTable GetPlayList()
         {
-            if (!File.Exists("playlist.db"))
-            {
-                CreateDBFile();
-            }
+            
             DataTable dt = new DataTable();
             try
             {
+                if (!File.Exists("playlist.db"))
+                {
+                    CreateDbFile();
+                }
                 SQLiteConnection cnn = new SQLiteConnection("Data Source=playlist.db");
                 cnn.Open();
                 SQLiteCommand mycommand = new SQLiteCommand(cnn);
@@ -63,13 +64,14 @@ namespace MetaData
 
         public DataTable GetPlayList(DateTime start, DateTime end)
         {
-            if (!File.Exists("playlist.db"))
-            {
-                CreateDBFile();
-            }
+           
             DataTable dt = new DataTable();
             try
             {
+                if (!File.Exists("playlist.db"))
+                {
+                    CreateDbFile();
+                }
                 SQLiteConnection cnn = new SQLiteConnection("Data Source=playlist.db");
                 cnn.Open();
                 SQLiteCommand mycommand = new SQLiteCommand(cnn);
@@ -90,16 +92,23 @@ namespace MetaData
 
         public void InsertSong(string song)
         {
-            if (!File.Exists("playlist.db"))
-            {
-                CreateDBFile();
-            }
+            
             try
             {
+                if (!File.Exists("playlist.db"))
+                {
+                    CreateDbFile();
+                }
+                string titel = song.Length > 50 ? song.Substring(0, 50) : song;
                 SQLiteConnection cnn = new SQLiteConnection("Data Source=playlist.db");
                 cnn.Open();
                 SQLiteCommand mycommand = new SQLiteCommand(cnn);
-                mycommand.CommandText = String.Format("insert into playlist(datetime, song) values('{0}','{1}');", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), song);
+                mycommand.CommandText = String.Format("insert into playlist(datetime, song) values('{0}','{1}')", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), titel);
+                //mycommand.CommandText = String.Format("insert into playlist(datetime, song) values(@dateParam,@songParam)");
+                //var dateParam = new SQLiteParameter("@dateParam", SqlDbType.DateTime) { Value = DateTime.Now };
+                //var songParam = new SQLiteParameter("@songParam", SqlDbType.Text) { Value = song };
+                //mycommand.Parameters.Add(dateParam);
+                //mycommand.Parameters.Add(songParam);
                 mycommand.ExecuteNonQuery();
                 cnn.Close();
             }

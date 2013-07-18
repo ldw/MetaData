@@ -25,6 +25,7 @@ namespace MetaData
         private void Form1_Load(object sender, EventArgs e)
         {
             dateTimeStart.Value = DateTime.Today.AddDays(-1);
+            ckSongFromZaraToIcecast.Checked = true;
         }
 
         private void watchFile()
@@ -52,12 +53,12 @@ namespace MetaData
             {
                 _fileWatcher.EnableRaisingEvents = true;
             }
-            if (!Helper.IsJingle(song, txtJingles.Text)) {
+            if (!Helper.IsJingle(song, txtJingles.Text) && !Helper.IsIpOrNumber(song)) {
                 myDAL.InsertSong(song);
                 updateMetadata((song));
             }
             else{
-                updateMetadata("Radio Scorpio - 106 FM");
+                updateMetadata(Helper.STANDARD_MSG);
             }
             
         }
@@ -91,24 +92,22 @@ namespace MetaData
             
         }
 
-        private void checkConfigOk()
-        {
-            if (txtAdres.Text.Trim().Equals("") || txtStream.Text.Trim().Equals("") || txtUser.Text.Trim().Equals("") || txtPass.Text.Trim().Equals(""))
-            {
-                lblDateTime.Text = "Can not start. Configuration missing...";
-                ckSongFromZaraToIcecast.Checked = false;
-            }
-            else
-                lblDateTime.Text = "";
-        }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            checkConfigOk();
+            this.Cursor = Cursors.WaitCursor;
             if (ckSongFromZaraToIcecast.Checked)
             {
                 if(File.Exists(txtZaraPath.Text))
-                    watchFile();
+                {
+                    if (txtAdres.Text.Trim().Equals("") || txtStream.Text.Trim().Equals("") || txtUser.Text.Trim().Equals("") || txtPass.Text.Trim().Equals(""))
+                    {
+                        ckSongFromZaraToIcecast.Checked = false;
+                        tabControl1.SelectedTab = tabConfig;
+                    }
+                    else
+                        watchFile(); // config is ok
+                }
                 else{
                     ckSongFromZaraToIcecast.Checked = false;
                     tabControl1.SelectedTab = tabConfig;
@@ -119,7 +118,7 @@ namespace MetaData
                 _fileWatcher.EnableRaisingEvents = false;
 
             timer1.Enabled = ckSongFromZaraToIcecast.Checked;
-
+            this.Cursor = Cursors.Default;
         }
 
         private void testUpdateMetaData()
@@ -127,7 +126,7 @@ namespace MetaData
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                Uri uri = Helper.CreateUri(txtAdres.Text, txtStream.Text, "Radio Scorpio - 106FM");
+                Uri uri = Helper.CreateUri(txtAdres.Text, txtStream.Text, Helper.STANDARD_MSG);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri) as HttpWebRequest;
                 request.Accept = "application/xml";
 
@@ -189,7 +188,7 @@ namespace MetaData
         {
             try
             {
-                string message = Helper.DGVtoString(dataGridView1, " - ");
+                string message = Helper.DgVtoString(dataGridView1, " - ");
                 SendMail.SendEmail("Playlist from " + dateTimeStart.Value.ToString() + " till " + dateTimeEnd.Value.ToString(), message, txtMailDestination.Text);
                 txtMailDestination.Text = "";
                 MessageBox.Show("Sent!");
@@ -197,7 +196,6 @@ namespace MetaData
             catch (Exception xe)
             {
 
-                ErrorHandler.LogErrorInTXT(xe.Message);
                 MessageBox.Show(xe.Message);
             }
             
@@ -205,8 +203,16 @@ namespace MetaData
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (!File.Exists(txtZaraPath.Text))
-                ErrorHandler.HandleTheError("File not found: " + txtZaraPath.Text);
+            try
+            {
+                if (!File.Exists(txtZaraPath.Text))
+                    ErrorHandler.HandleTheError("File not found: " + txtZaraPath.Text);
+            }
+            catch (Exception ex)
+            {
+                    ErrorHandler.HandleTheError(ex.Message);
+            }
+            
         }
     }
 }

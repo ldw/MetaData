@@ -8,9 +8,17 @@ namespace MetaData
     public static class ErrorLog
     {
         public static void LogError(string error) {
-            checkFile();
-            string errortolog = DateTime.Now.ToLongDateString() + " : " + error;
-            File.AppendAllText(@"ErrorLog.txt", errortolog);
+            try
+            {
+                checkFile();
+                string errortolog = DateTime.Now.ToLongDateString() + " : " + error;
+                File.AppendAllText(@"ErrorLog.txt", errortolog);
+            }
+            catch (Exception ex)
+            {
+                    // send mail?
+            }
+            
         }
         private static void checkFile()
         {

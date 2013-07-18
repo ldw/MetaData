@@ -47,6 +47,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ckSongFromZaraToIcecast = new System.Windows.Forms.CheckBox();
             this.tabConfig = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtJingles = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtZaraPath = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -63,14 +65,13 @@
             this.dateTimeStart = new System.Windows.Forms.DateTimePicker();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.txtJingles = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpsent.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabConfig.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -78,7 +79,6 @@
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -225,6 +225,7 @@
             // txtSongSendFromZara
             // 
             this.txtSongSendFromZara.Enabled = false;
+            this.txtSongSendFromZara.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSongSendFromZara.Location = new System.Drawing.Point(7, 41);
             this.txtSongSendFromZara.Multiline = true;
             this.txtSongSendFromZara.Name = "txtSongSendFromZara";
@@ -244,6 +245,7 @@
             // ckSongFromZaraToIcecast
             // 
             this.ckSongFromZaraToIcecast.AutoSize = true;
+            this.ckSongFromZaraToIcecast.Enabled = false;
             this.ckSongFromZaraToIcecast.Location = new System.Drawing.Point(7, 19);
             this.ckSongFromZaraToIcecast.Name = "ckSongFromZaraToIcecast";
             this.ckSongFromZaraToIcecast.Size = new System.Drawing.Size(249, 17);
@@ -265,6 +267,29 @@
             this.tabConfig.Text = "Configuration";
             this.tabConfig.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.txtJingles);
+            this.groupBox4.Location = new System.Drawing.Point(19, 236);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(393, 155);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Words to filter out (jingles and live show, seperated by comma)";
+            // 
+            // txtJingles
+            // 
+            this.txtJingles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtJingles.Location = new System.Drawing.Point(3, 16);
+            this.txtJingles.Multiline = true;
+            this.txtJingles.Name = "txtJingles";
+            this.txtJingles.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtJingles.Size = new System.Drawing.Size(387, 136);
+            this.txtJingles.TabIndex = 0;
+            this.txtJingles.Text = "jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Sc" +
+    "orpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,10.48.13,even" +
+    "ement";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.txtZaraPath);
@@ -281,7 +306,7 @@
             this.txtZaraPath.Name = "txtZaraPath";
             this.txtZaraPath.Size = new System.Drawing.Size(305, 20);
             this.txtZaraPath.TabIndex = 0;
-            this.txtZaraPath.Text = "C:\\Temp\\CurrentSong.txt";
+            this.txtZaraPath.Text = "\\\\studio1\\ZaraRadio\\CurrentSong.txt";
             // 
             // tabPage2
             // 
@@ -289,7 +314,7 @@
             this.tabPage2.Controls.Add(this.panel1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(621, 317);
+            this.tabPage2.Size = new System.Drawing.Size(535, 394);
             this.tabPage2.TabIndex = 2;
             this.tabPage2.Text = "Playlist";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -300,7 +325,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 83);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(621, 234);
+            this.panel2.Size = new System.Drawing.Size(535, 311);
             this.panel2.TabIndex = 2;
             // 
             // dataGridView1
@@ -309,7 +334,7 @@
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(621, 234);
+            this.dataGridView1.Size = new System.Drawing.Size(535, 311);
             this.dataGridView1.TabIndex = 0;
             // 
             // panel1
@@ -323,7 +348,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(621, 83);
+            this.panel1.Size = new System.Drawing.Size(535, 83);
             this.panel1.TabIndex = 1;
             // 
             // groupBox5
@@ -410,31 +435,8 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 60000;
+            this.timer1.Interval = 600000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.txtJingles);
-            this.groupBox4.Location = new System.Drawing.Point(19, 236);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(393, 155);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Words to filter out (jingles and live show, seperated by comma)";
-            // 
-            // txtJingles
-            // 
-            this.txtJingles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtJingles.Location = new System.Drawing.Point(3, 16);
-            this.txtJingles.Multiline = true;
-            this.txtJingles.Name = "txtJingles";
-            this.txtJingles.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtJingles.Size = new System.Drawing.Size(387, 136);
-            this.txtJingles.TabIndex = 0;
-            this.txtJingles.Text = "jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Sc" +
-    "orpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,http://10.48." +
-    "13.184:8005";
             // 
             // Form1
             // 
@@ -454,6 +456,8 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabConfig.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -464,8 +468,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
