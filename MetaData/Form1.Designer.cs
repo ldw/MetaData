@@ -40,7 +40,7 @@
             this.txtStream = new System.Windows.Forms.TextBox();
             this.txtAdres = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabIcecastComm = new System.Windows.Forms.TabPage();
             this.grpsent = new System.Windows.Forms.GroupBox();
             this.lblDateTime = new System.Windows.Forms.Label();
             this.txtSongSendFromZara = new System.Windows.Forms.TextBox();
@@ -67,7 +67,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabIcecastComm.SuspendLayout();
             this.grpsent.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabConfig.SuspendLayout();
@@ -159,7 +159,6 @@
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(157, 20);
             this.txtUser.TabIndex = 0;
-            this.txtUser.Text = "admin";
             // 
             // txtStream
             // 
@@ -175,11 +174,10 @@
             this.txtAdres.Name = "txtAdres";
             this.txtAdres.Size = new System.Drawing.Size(157, 20);
             this.txtAdres.TabIndex = 0;
-            this.txtAdres.Text = "193.190.253.57:8000";
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabIcecastComm);
             this.tabControl1.Controls.Add(this.tabConfig);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -188,18 +186,19 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(543, 420);
             this.tabControl1.TabIndex = 1;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // tabPage1
+            // tabIcecastComm
             // 
-            this.tabPage1.Controls.Add(this.grpsent);
-            this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(535, 394);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Song2Icecast";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabIcecastComm.Controls.Add(this.grpsent);
+            this.tabIcecastComm.Controls.Add(this.groupBox3);
+            this.tabIcecastComm.Location = new System.Drawing.Point(4, 22);
+            this.tabIcecastComm.Name = "tabIcecastComm";
+            this.tabIcecastComm.Padding = new System.Windows.Forms.Padding(3);
+            this.tabIcecastComm.Size = new System.Drawing.Size(535, 394);
+            this.tabIcecastComm.TabIndex = 0;
+            this.tabIcecastComm.Text = "Song2Icecast";
+            this.tabIcecastComm.UseVisualStyleBackColor = true;
             // 
             // grpsent
             // 
@@ -245,7 +244,6 @@
             // ckSongFromZaraToIcecast
             // 
             this.ckSongFromZaraToIcecast.AutoSize = true;
-            this.ckSongFromZaraToIcecast.Enabled = false;
             this.ckSongFromZaraToIcecast.Location = new System.Drawing.Point(7, 19);
             this.ckSongFromZaraToIcecast.Name = "ckSongFromZaraToIcecast";
             this.ckSongFromZaraToIcecast.Size = new System.Drawing.Size(249, 17);
@@ -450,7 +448,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabIcecastComm.ResumeLayout(false);
             this.grpsent.ResumeLayout(false);
             this.grpsent.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -484,7 +482,7 @@
         private System.Windows.Forms.TextBox txtStream;
         private System.Windows.Forms.TextBox txtAdres;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabIcecastComm;
         private System.Windows.Forms.TabPage tabConfig;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtZaraPath;

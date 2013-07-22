@@ -10,7 +10,7 @@ namespace MetaData
 {
     public static class Helper
     {
-        public const string STANDARD_MSG = "Klik hier om te luisteren.";
+        public const string STANDARD_MSG = "Radio Scorpio | 106 FM";
         public static string DgVtoString(DataGridView dgv, string delimiter)
         {
             StringBuilder sb = new StringBuilder();

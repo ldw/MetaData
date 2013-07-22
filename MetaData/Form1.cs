@@ -24,7 +24,7 @@ namespace MetaData
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dateTimeStart.Value = DateTime.Today.AddDays(-1);
+            
             ckSongFromZaraToIcecast.Checked = true;
         }
 
@@ -105,8 +105,12 @@ namespace MetaData
                         ckSongFromZaraToIcecast.Checked = false;
                         tabControl1.SelectedTab = tabConfig;
                     }
-                    else
+                    else{
+                        setTabsEnabled(false);
+                        tabControl1.SelectedTab = tabPage2;
                         watchFile(); // config is ok
+                        
+                    }
                 }
                 else{
                     ckSongFromZaraToIcecast.Checked = false;
@@ -114,12 +118,19 @@ namespace MetaData
                     txtZaraPath.Focus();
                 }
             }
-            else
+            else{
                 _fileWatcher.EnableRaisingEvents = false;
-
+                setTabsEnabled(true);
+                }
             timer1.Enabled = ckSongFromZaraToIcecast.Checked;
             this.Cursor = Cursors.Default;
         }
+        private void setTabsEnabled(bool enabled)
+        {
+            tabConfig.Enabled = enabled;
+            tabIcecastComm.Enabled = enabled;
+        }
+
 
         private void testUpdateMetaData()
         {
@@ -213,6 +224,11 @@ namespace MetaData
                     ErrorHandler.HandleTheError(ex.Message);
             }
             
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dateTimeStart.Value = DateTime.Today.AddDays(-1);
         }
     }
 }

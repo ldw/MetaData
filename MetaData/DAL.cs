@@ -103,12 +103,9 @@ namespace MetaData
                 SQLiteConnection cnn = new SQLiteConnection("Data Source=playlist.db");
                 cnn.Open();
                 SQLiteCommand mycommand = new SQLiteCommand(cnn);
-                mycommand.CommandText = String.Format("insert into playlist(datetime, song) values('{0}','{1}')", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), titel);
-                //mycommand.CommandText = String.Format("insert into playlist(datetime, song) values(@dateParam,@songParam)");
-                //var dateParam = new SQLiteParameter("@dateParam", SqlDbType.DateTime) { Value = DateTime.Now };
-                //var songParam = new SQLiteParameter("@songParam", SqlDbType.Text) { Value = song };
-                //mycommand.Parameters.Add(dateParam);
-                //mycommand.Parameters.Add(songParam);
+                mycommand.CommandText = String.Format("insert into playlist(datetime, song) values(@dateParam,@songParam)");
+                mycommand.Parameters.AddWithValue("@dateParam", DateTime.Now);
+                mycommand.Parameters.AddWithValue("@songParam", titel);
                 mycommand.ExecuteNonQuery();
                 cnn.Close();
             }
