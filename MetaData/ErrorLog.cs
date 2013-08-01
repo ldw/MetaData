@@ -10,7 +10,7 @@ namespace MetaData
         public static void LogError(string error) {
             try
             {
-                checkFile();
+                CheckFile();
                 string errortolog = DateTime.Now.ToLongDateString() + " : " + error;
                 File.AppendAllText(@"ErrorLog.txt", errortolog);
             }
@@ -20,7 +20,7 @@ namespace MetaData
             }
             
         }
-        private static void checkFile()
+        private static void CheckFile()
         {
             if (!File.Exists("ErrorLog.txt"))
             {

@@ -7,7 +7,13 @@ using System.Data;
 
 namespace MetaData
 {
-    public class DAL
+    public interface IDAL
+    {
+        DataTable GetPlayList(DateTime start, DateTime end);
+        void InsertSong(string song);
+    }
+
+    public class SQLiteDAL : IDAL
     {
         public void CreateDbFile()
         {
@@ -27,44 +33,14 @@ namespace MetaData
                 catch (Exception e)
                 {
 
-                    ErrorHandler.HandleTheErrorIfTimeInterval(e.Message);
+                    ErrorHandler.HandleTheError(e.Message);
                 }
-                    
             }
         }
 
-        public DataTable GetPlayList()
-        {
-            
-            DataTable dt = new DataTable();
-            try
-            {
-                if (!File.Exists("playlist.db"))
-                {
-                    CreateDbFile();
-                }
-                SQLiteConnection cnn = new SQLiteConnection("Data Source=playlist.db");
-                cnn.Open();
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
-                mycommand.CommandText = "select datetime, song from playlist";
-                SQLiteDataReader reader = mycommand.ExecuteReader();
-                dt.Load(reader);
-                reader.Close();
-                cnn.Close();
-            }
-            catch (Exception ex)
-            {
-
-                ErrorHandler.HandleTheErrorIfTimeInterval(ex.Message);
-            }
-            
-
-            return dt;
-        }
 
         public DataTable GetPlayList(DateTime start, DateTime end)
         {
-           
             DataTable dt = new DataTable();
             try
             {
@@ -83,16 +59,14 @@ namespace MetaData
             }
             catch (Exception ex)
             {
-                ErrorHandler.HandleTheErrorIfTimeInterval(ex.Message);
+                ErrorHandler.HandleTheError(ex.Message);
             }
                 
-
             return dt;
         }
 
         public void InsertSong(string song)
         {
-            
             try
             {
                 if (!File.Exists("playlist.db"))
@@ -111,8 +85,7 @@ namespace MetaData
             }
             catch (Exception e)
             {
-
-                ErrorHandler.HandleTheErrorIfTimeInterval(e.Message);
+                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(e.Message);
             }
         }
     }

@@ -9,13 +9,15 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
 using System.Net;
+using MetaData.Properties;
 
 namespace MetaData
 {
     public partial class Form1 : Form
     {
-        FileSystemWatcher _fileWatcher = new FileSystemWatcher();
-        DAL myDAL = new DAL();
+        FileSystemWatcher myFileWatcher = new FileSystemWatcher();
+        IDAL myDAL = new SQLiteDAL();
+        bool myWatcherEnabled = false;
 
         public Form1()
         {
@@ -24,45 +26,49 @@ namespace MetaData
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-            ckSongFromZaraToIcecast.Checked = true;
+            //todo: timer: 1 minuut
+            timer1.Interval = Settings.Default.TimerCheckZaraFileExistsInMS;
+            timer1.Enabled = true;
+            CheckSettingsOK();
         }
 
-        private void watchFile()
+        private void WatchFile()
         {
-            _fileWatcher.Path = Path.GetDirectoryName(@txtZaraPath.Text);
-            _fileWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            _fileWatcher.Filter = Path.GetFileName(@txtZaraPath.Text);
-            _fileWatcher.Changed += new FileSystemEventHandler(OnChanged);
-            _fileWatcher.EnableRaisingEvents = true;
+            myFileWatcher.Path = Path.GetDirectoryName(@Settings.Default.ZaraPath);
+            myFileWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            myFileWatcher.Filter = Path.GetFileName(@Settings.Default.ZaraPath);
+            myFileWatcher.Changed += new FileSystemEventHandler(OnSongChanged);
+            myFileWatcher.EnableRaisingEvents = true;
         }
-        private void OnChanged(object source, FileSystemEventArgs e)
+
+        private void OnSongChanged(object source, FileSystemEventArgs e)
         {
             string song = "";
             try
             {
-                _fileWatcher.EnableRaisingEvents = false;
-                song = Helper.GetSongFromZaraTxt(@txtZaraPath.Text);
+                myFileWatcher.EnableRaisingEvents = false;
+                song = Helper.GetSongFromZaraTxt(@Settings.Default.ZaraPath);
             }
             catch (Exception ex)
             {
                 ShowInfoOnForm(ex.Message);
-                ErrorHandler.HandleTheErrorIfTimeInterval(ex.ToString());
+                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.ToString());
             }
             finally
             {
-                _fileWatcher.EnableRaisingEvents = true;
+                myFileWatcher.EnableRaisingEvents = true;
             }
-            if (!Helper.IsJingle(song, txtJingles.Text) && !Helper.IsIpOrNumber(song)) {
+            if (!Helper.IsJingle(song, Settings.Default.WordsToFilterOut) && !Helper.IsIpOrNumber(song)) {
                 myDAL.InsertSong(song);
-                updateMetadata((song));
+                UpdateMetadata((song));
             }
             else{
-                updateMetadata(Helper.STANDARD_MSG);
+                UpdateMetadata(Settings.Default.IcecastDefaultText);
             }
-            
         }
+
         private delegate void stringDelegate(string s);
+
         private void ShowInfoOnForm(string s)
         {
             if (txtSongSendFromZara.InvokeRequired)
@@ -77,73 +83,41 @@ namespace MetaData
             }
         }
 
-        private void updateMetadata(string song)
+        private void UpdateMetadata(string song)
         {
             try {
                 ShowInfoOnForm("Communicating with shoutcast...");
 
-                Helper.UpdateIcecast(txtAdres.Text, txtStream.Text, song, txtUser.Text, txtPass.Text);
-                ShowInfoOnForm(song);
+                bool resultOk = Helper.UpdateIcecast(song);
+                if (resultOk)
+                {
+                    ShowInfoOnForm(song);
+                }
+                else
+                {
+                    ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough("Error updating Icecast. The HttpWebResponse.StatusCode is not ok");
+                    ShowInfoOnForm("Error updating Icecast. The HttpWebResponse.StatusCode is not ok");
+                }
             }
             catch(Exception e) {
                 ShowInfoOnForm(e.Message);
-                ErrorHandler.HandleTheErrorIfTimeInterval(e.Message);
+                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(e.Message);
             }
             
         }
 
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.WaitCursor;
-            if (ckSongFromZaraToIcecast.Checked)
-            {
-                if(File.Exists(txtZaraPath.Text))
-                {
-                    if (txtAdres.Text.Trim().Equals("") || txtStream.Text.Trim().Equals("") || txtUser.Text.Trim().Equals("") || txtPass.Text.Trim().Equals(""))
-                    {
-                        ckSongFromZaraToIcecast.Checked = false;
-                        tabControl1.SelectedTab = tabConfig;
-                    }
-                    else{
-                        setTabsEnabled(false);
-                        tabControl1.SelectedTab = tabPage2;
-                        watchFile(); // config is ok
-                        
-                    }
-                }
-                else{
-                    ckSongFromZaraToIcecast.Checked = false;
-                    tabControl1.SelectedTab = tabConfig;
-                    txtZaraPath.Focus();
-                }
-            }
-            else{
-                _fileWatcher.EnableRaisingEvents = false;
-                setTabsEnabled(true);
-                }
-            timer1.Enabled = ckSongFromZaraToIcecast.Checked;
-            this.Cursor = Cursors.Default;
-        }
-        private void setTabsEnabled(bool enabled)
-        {
-            tabConfig.Enabled = enabled;
-            tabIcecastComm.Enabled = enabled;
-        }
-
-
-        private void testUpdateMetaData()
+        private void TestUpdateMetaData()
         {
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                Uri uri = Helper.CreateUri(txtAdres.Text, txtStream.Text, Helper.STANDARD_MSG);
+                Uri uri = new Uri(@Settings.Default.IcecastUri + Settings.Default.IcecastDefaultText);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri) as HttpWebRequest;
                 request.Accept = "application/xml";
 
                 // authentication
                 var cache = new CredentialCache();
-                cache.Add(uri, "Basic", new NetworkCredential(txtUser.Text, txtPass.Text));
+                cache.Add(uri, "Basic", new NetworkCredential(Settings.Default.IcecastUser, Settings.Default.IcecastPass));
                 request.Credentials = cache;
 
                 ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(Helper.AcceptAllCertifications);
@@ -155,7 +129,7 @@ namespace MetaData
                     StreamReader sr = new StreamReader(response.GetResponseStream());
                     string str = sr.ReadToEnd();
 
-                    MessageBox.Show("Succeed! Icecast response: " + str,"Succes");
+                    MessageBox.Show("Succeed! Icecast response: " + str, "Succes");
                 }
                 else
                 {
@@ -174,28 +148,126 @@ namespace MetaData
             }
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            testUpdateMetaData();
-        }
-
-        private void btnShowPlayList_Click(object sender, EventArgs e)
-        {
-            DataTable playlist = myDAL.GetPlayList(dateTimeStart.Value, dateTimeEnd.Value);
-            dataGridView1.DataSource = playlist;
-            enableSendMailButton();
-        }
-
-        private void enableSendMailButton() {
+        private void EnableSendMailButton() {
             btnSendMail.Enabled = (dataGridView1.Rows.Count > 0) && Helper.IsValidEmail(txtMailDestination.Text);
         }
 
-        private void txtMailDestination_TextChanged(object sender, EventArgs e)
+        private void CheckSettingsOK()
         {
-            enableSendMailButton();
+            try
+            {
+                if (File.Exists(@Settings.Default.ZaraPath))
+                {
+                    myWatcherEnabled = true;
+                    WatchFile();
+                }
+                else
+                {
+                    ShowInfoOnForm(@Settings.Default.ZaraPath + " not found! Waiting one minute...");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.Message);
+            }
+            ckSongFromZaraToIcecast.Checked = myWatcherEnabled;
         }
 
-        private void btnSendMail_Click(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            CheckZaraFileAccessible();
+        }
+
+        private void CheckZaraFileAccessible()
+        {
+            try
+            {
+                if (!File.Exists(@Settings.Default.ZaraPath))
+                {
+                    ckSongFromZaraToIcecast.Checked = false;
+                    string error = Settings.Default.ZaraPath + " is not accessible!";
+                    ShowInfoOnForm(error);
+                    ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(error);
+                }
+                else
+                {
+                    ckSongFromZaraToIcecast.Checked = true;
+                    if (!myWatcherEnabled)
+                    {
+                        myWatcherEnabled = true;
+                        ShowInfoOnForm("");
+                        WatchFile();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.Message);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e) //testbutton
+        {
+            string input = "";
+            if (InputBox("Warning", "By testing the Icecast communication, the current song info will reset to '" + Settings.Default.IcecastDefaultText + "'. Type 'yes' to continue." , ref input) == DialogResult.OK)
+            {
+                if (input == "yes")
+                {
+                    TestUpdateMetaData();
+                }
+            }
+        }
+
+        public static DialogResult InputBox(string title, string promptText, ref string value)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Text = value;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 20);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(396, 107);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text;
+            return dialogResult;
+        }
+
+        private void btnShowPlayList_Click_1(object sender, EventArgs e)
+        {
+            DataTable playlist = myDAL.GetPlayList(dateTimeStart.Value, dateTimeEnd.Value);
+            dataGridView1.DataSource = playlist;
+            EnableSendMailButton();
+        }
+
+        private void btnSendMail_Click_1(object sender, EventArgs e)
         {
             try
             {
@@ -206,29 +278,8 @@ namespace MetaData
             }
             catch (Exception xe)
             {
-
                 MessageBox.Show(xe.Message);
             }
-            
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!File.Exists(txtZaraPath.Text))
-                    ErrorHandler.HandleTheError("File not found: " + txtZaraPath.Text);
-            }
-            catch (Exception ex)
-            {
-                    ErrorHandler.HandleTheError(ex.Message);
-            }
-            
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            dateTimeStart.Value = DateTime.Today.AddDays(-1);
         }
     }
 }

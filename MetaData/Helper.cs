@@ -5,12 +5,12 @@ using System.Net;
 using System.Text;
 using System.Configuration;
 using System.Windows.Forms;
+using MetaData.Properties;
 
 namespace MetaData
 {
     public static class Helper
     {
-        public const string STANDARD_MSG = "Radio Scorpio | 106 FM";
         public static string DgVtoString(DataGridView dgv, string delimiter)
         {
             StringBuilder sb = new StringBuilder();
@@ -26,6 +26,7 @@ namespace MetaData
             }
             return sb.ToString();
         }
+
         public static bool IsValidEmail(string email)
         {
             try
@@ -39,62 +40,76 @@ namespace MetaData
             }
         }
 
-        public static Uri CreateUri(string adres, string stream, string s)
+        public static bool UpdateIcecast(string song)
         {
-            return new Uri("http://" + adres + @"/admin/metadata?mount=" + stream + "&mode=updinfo&song=" + s);
-        }
-        public static void UpdateIcecast(string adres, string stream, string song, string user, string pass)
-        {
-            Uri uri = CreateUri(adres, stream, song);
+#if(DEBUG)
+            return true;
+#endif
+            bool icecastCommunicationSucceeded = false;
+
+            Uri uri = new Uri(@Settings.Default.IcecastUri + song);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri) as HttpWebRequest;
             request.Accept = "application/xml";
 
             // authentication
             var cache = new CredentialCache();
-            cache.Add(uri, "Basic", new NetworkCredential(user, pass));
+            cache.Add(uri, "Basic", new NetworkCredential(Settings.Default.IcecastUser, Settings.Default.IcecastPass));
             request.Credentials = cache;
 
             ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 
             // response.
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                icecastCommunicationSucceeded = true;
+            }
+            
             response.Close();
+            return icecastCommunicationSucceeded;
         }
+
         public static bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
+
         public static string GetSongFromZaraTxt(string @zarapath)
         {
             try
             {
                 string musicfile = File.ReadAllText(@zarapath, Encoding.Default);
-                musicfile = musicfile.Replace("\n", "").Replace("\r", "");
-                if (musicfile.Contains("~"))
-                {
-                    musicfile = musicfile.Remove(musicfile.IndexOf("~"));
-                }
 
-                return musicfile;
+                return PrettyUpSongName(musicfile);
             }
             catch (Exception)
             {
                 return "";
             }
-            
         }
-/*
+
         private static string PrettyUpSongName(string song)
-        { 
-            
+        {
+            song = song.Replace("\n", "").Replace("\r", "");
+            if(song.Contains("&"))
+            {
+                song = song.Replace("&", "and");
+            }
+            if (song.Contains("~"))
+            {
+                song = song.Remove(song.IndexOf("~"));
+            }
+            if (song.Contains("-"))
+            {
+                string artist = song.Split('-')[0];
+                if (artist.Contains(", The"))
+                {
+                    song = "The " + song.Replace(", The", "");
+                }
+            }
             return song;
         }
-*/
-        /// <summary>
-        /// Check if jingle or live show
-        /// </summary>
-        /// <param name="song"></param>
-        /// <returns></returns>
+
         public static bool IsJingle(string song, string jingles)
         {
             if (song.Length < 8)
@@ -114,7 +129,5 @@ namespace MetaData
             int number;
             return Int32.TryParse(song.Replace(".", ""), out number);
         }
-
     }
-
 }
