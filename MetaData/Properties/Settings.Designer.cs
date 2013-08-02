@@ -25,15 +25,6 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.9:8000/admin/metadata?mount=/stream&mode=updinfo&song=")]
-        public string IcecastUri {
-            get {
-                return ((string)(this["IcecastUri"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Sc" +
             "orpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,10.48.13,even" +
             "ement")]
@@ -90,19 +81,10 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Temp\\CurrentSong.txt")]
-        public string ZaraPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://193.190.253.57:8000/admin/metadata?mount=/stream&mode=updinfo&song=")]
+        public string IcecastUri {
             get {
-                return ((string)(this["ZaraPath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("@gmail.com")]
-        public string MailAdress {
-            get {
-                return ((string)(this["MailAdress"]));
+                return ((string)(this["IcecastUri"]));
             }
         }
         
@@ -126,7 +108,16 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("@gmail.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("icecastserverscorpio@gmail.com")]
+        public string MailAdress {
+            get {
+                return ((string)(this["MailAdress"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("icecastserverscorpio@gmail.com")]
         public string MailCredUser {
             get {
                 return ((string)(this["MailCredUser"]));
@@ -144,10 +135,19 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("@.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AdminMail {
             get {
                 return ((string)(this["AdminMail"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Temp\\CurrentSong.txt")]
+        public string ZaraPath {
+            get {
+                return ((string)(this["ZaraPath"]));
             }
         }
     }
