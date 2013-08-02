@@ -25,7 +25,7 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://193.190.253.57:8000/admin/metadata?mount=/stream&mode=updinfo&song=")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.9:8000/admin/metadata?mount=/stream&mode=updinfo&song=")]
         public string IcecastUri {
             get {
                 return ((string)(this["IcecastUri"]));
@@ -49,15 +49,6 @@ namespace MetaData.Properties {
         public string IcecastDefaultText {
             get {
                 return ((string)(this["IcecastDefaultText"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("icecastserverscorpio@gmail.com")]
-        public string MailAdress {
-            get {
-                return ((string)(this["MailAdress"]));
             }
         }
         
@@ -99,6 +90,24 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Temp\\CurrentSong.txt")]
+        public string ZaraPath {
+            get {
+                return ((string)(this["ZaraPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("@gmail.com")]
+        public string MailAdress {
+            get {
+                return ((string)(this["MailAdress"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string IcecastUser {
             get {
@@ -117,7 +126,7 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("@gmail.com")]
         public string MailCredUser {
             get {
                 return ((string)(this["MailCredUser"]));
@@ -135,19 +144,10 @@ namespace MetaData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("@.com")]
         public string AdminMail {
             get {
                 return ((string)(this["AdminMail"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ZaraPath {
-            get {
-                return ((string)(this["ZaraPath"]));
             }
         }
     }

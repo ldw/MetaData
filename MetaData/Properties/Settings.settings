@@ -3,16 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="IcecastUri" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://193.190.253.57:8000/admin/metadata?mount=/stream&amp;mode=updinfo&amp;song=</Value>
+      <Value Profile="(Default)">http://192.168.1.9:8000/admin/metadata?mount=/stream&amp;mode=updinfo&amp;song=</Value>
     </Setting>
     <Setting Name="WordsToFilterOut" Type="System.String" Scope="Application">
       <Value Profile="(Default)">jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Scorpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,10.48.13,evenement</Value>
     </Setting>
     <Setting Name="IcecastDefaultText" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Radio Scorpio | 106 FM</Value>
-    </Setting>
-    <Setting Name="MailAdress" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">icecastserverscorpio@gmail.com</Value>
     </Setting>
     <Setting Name="MailHost" Type="System.String" Scope="Application">
       <Value Profile="(Default)">smtp.gmail.com</Value>
@@ -26,6 +23,12 @@
     <Setting Name="TimerCheckZaraFileExistsInMS" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">60000</Value>
     </Setting>
+    <Setting Name="ZaraPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\Temp\CurrentSong.txt</Value>
+    </Setting>
+    <Setting Name="MailAdress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">@gmail.com</Value>
+    </Setting>
     <Setting Name="IcecastUser" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
@@ -33,16 +36,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MailCredUser" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">@gmail.com</Value>
     </Setting>
     <Setting Name="MailCredPass" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AdminMail" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ZaraPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">@.com</Value>
     </Setting>
   </Settings>
 </SettingsFile>

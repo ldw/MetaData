@@ -193,6 +193,7 @@
             this.txtMailDestination.Size = new System.Drawing.Size(170, 20);
             this.txtMailDestination.TabIndex = 0;
             this.txtMailDestination.Text = "muziek@radioscorpio.be";
+            this.txtMailDestination.TextChanged += new System.EventHandler(this.txtMailDestination_TextChanged);
             // 
             // dateTimeEnd
             // 

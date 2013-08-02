@@ -26,7 +26,7 @@ namespace MetaData
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //todo: timer: 1 minuut
+            //todo: zara path \\studio1\ZaraRadio
             timer1.Interval = Settings.Default.TimerCheckZaraFileExistsInMS;
             timer1.Enabled = true;
             CheckSettingsOK();
@@ -262,24 +262,34 @@ namespace MetaData
 
         private void btnShowPlayList_Click_1(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             DataTable playlist = myDAL.GetPlayList(dateTimeStart.Value, dateTimeEnd.Value);
             dataGridView1.DataSource = playlist;
             EnableSendMailButton();
+            this.Cursor = Cursors.Default;
         }
 
         private void btnSendMail_Click_1(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             try
             {
                 string message = Helper.DgVtoString(dataGridView1, " - ");
                 SendMail.SendEmail("Playlist from " + dateTimeStart.Value.ToString() + " till " + dateTimeEnd.Value.ToString(), message, txtMailDestination.Text);
                 txtMailDestination.Text = "";
+                this.Cursor = Cursors.Default;
                 MessageBox.Show("Sent!");
             }
             catch (Exception xe)
             {
+                this.Cursor = Cursors.Default;
                 MessageBox.Show(xe.Message);
             }
+        }
+
+        private void txtMailDestination_TextChanged(object sender, EventArgs e)
+        {
+            EnableSendMailButton();
         }
     }
 }

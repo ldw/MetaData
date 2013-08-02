@@ -42,12 +42,9 @@ namespace MetaData
 
         public static bool UpdateIcecast(string song)
         {
-#if(DEBUG)
-            return true;
-#endif
             bool icecastCommunicationSucceeded = false;
 
-            Uri uri = new Uri(@Settings.Default.IcecastUri + song);
+            Uri uri = new Uri(@Settings.Default.IcecastUri + song + "&charset=utf8");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri) as HttpWebRequest;
             request.Accept = "application/xml";
 
@@ -68,6 +65,12 @@ namespace MetaData
             response.Close();
             return icecastCommunicationSucceeded;
         }
+
+        //private static string ConvertToUTF8(string myString)
+        //{
+        //    byte[] bytes = Encoding.Default.GetBytes(myString);
+        //    return Encoding.UTF8.GetString(bytes);
+        //}
 
         public static bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
         {
