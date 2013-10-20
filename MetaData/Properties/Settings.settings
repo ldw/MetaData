@@ -2,17 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MetaData.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="IcecastUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="WordsToFilterOut" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">jingle radio scorpio,jingle club 106,Tijdsein - jingle,Jingles Scorpio,Jingles Scorpio Electro,Nieuws - TussenTune,Radio scorpio dubstep,nieuws~0.0,10.48.13,evenement</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="IcecastDefaultText" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Radio Scorpio | 106 FM</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MailHost" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">smtp.gmail.com</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MailPort" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">587</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MailSSL" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
@@ -20,8 +23,11 @@
     <Setting Name="TimerCheckZaraFileExistsInMS" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">60000</Value>
     </Setting>
-    <Setting Name="IcecastUri" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://193.190.253.57:8000/admin/metadata?mount=/stream&amp;mode=updinfo&amp;song=</Value>
+    <Setting Name="ZaraPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\Temp\CurrentSong.txt</Value>
+    </Setting>
+    <Setting Name="MailAdress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">@gmail.com</Value>
     </Setting>
     <Setting Name="IcecastUser" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
@@ -29,20 +35,20 @@
     <Setting Name="IcecastPass" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MailAdress" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">icecastserverscorpio@gmail.com</Value>
-    </Setting>
     <Setting Name="MailCredUser" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">icecastserverscorpio@gmail.com</Value>
+      <Value Profile="(Default)">@gmail.com</Value>
     </Setting>
     <Setting Name="MailCredPass" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AdminMail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">@.com</Value>
+    </Setting>
+    <Setting Name="MySqlDbConnectionString" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ZaraPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\Temp\CurrentSong.txt</Value>
+    <Setting Name="PhpScriptURI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

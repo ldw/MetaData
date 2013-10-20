@@ -29,41 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.grpsent = new System.Windows.Forms.GroupBox();
             this.btnTest = new System.Windows.Forms.Button();
             this.ckSongFromZaraToIcecast = new System.Windows.Forms.CheckBox();
             this.lblDateTime = new System.Windows.Forms.Label();
             this.txtSongSendFromZara = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.grpPlaylist = new System.Windows.Forms.Panel();
-            this.groupBoxPlaylist = new System.Windows.Forms.GroupBox();
-            this.dateTimeStart = new System.Windows.Forms.DateTimePicker();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btnSendMail = new System.Windows.Forms.Button();
-            this.txtMailDestination = new System.Windows.Forms.TextBox();
-            this.dateTimeEnd = new System.Windows.Forms.DateTimePicker();
-            this.btnShowPlayList = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.tmrPoll = new System.Windows.Forms.Timer(this.components);
             this.grpsent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.grpPlaylist.SuspendLayout();
-            this.groupBoxPlaylist.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // fileSystemWatcher1
-            // 
-            this.fileSystemWatcher1.EnableRaisingEvents = true;
-            this.fileSystemWatcher1.SynchronizingObject = this;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 60000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // grpsent
             // 
@@ -121,162 +94,33 @@
             this.txtSongSendFromZara.Size = new System.Drawing.Size(483, 46);
             this.txtSongSendFromZara.TabIndex = 3;
             // 
-            // dataGridView1
+            // tmrPoll
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 215);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(505, 193);
-            this.dataGridView1.TabIndex = 8;
-            // 
-            // grpPlaylist
-            // 
-            this.grpPlaylist.Controls.Add(this.groupBoxPlaylist);
-            this.grpPlaylist.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpPlaylist.Location = new System.Drawing.Point(0, 110);
-            this.grpPlaylist.Name = "grpPlaylist";
-            this.grpPlaylist.Size = new System.Drawing.Size(505, 105);
-            this.grpPlaylist.TabIndex = 9;
-            // 
-            // groupBoxPlaylist
-            // 
-            this.groupBoxPlaylist.Controls.Add(this.dateTimeStart);
-            this.groupBoxPlaylist.Controls.Add(this.groupBox5);
-            this.groupBoxPlaylist.Controls.Add(this.dateTimeEnd);
-            this.groupBoxPlaylist.Controls.Add(this.btnShowPlayList);
-            this.groupBoxPlaylist.Controls.Add(this.label5);
-            this.groupBoxPlaylist.Controls.Add(this.label6);
-            this.groupBoxPlaylist.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxPlaylist.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxPlaylist.Name = "groupBoxPlaylist";
-            this.groupBoxPlaylist.Size = new System.Drawing.Size(505, 105);
-            this.groupBoxPlaylist.TabIndex = 6;
-            this.groupBoxPlaylist.TabStop = false;
-            this.groupBoxPlaylist.Text = "Playlist";
-            // 
-            // dateTimeStart
-            // 
-            this.dateTimeStart.CustomFormat = "dd-MM-yyyy    HH:mm";
-            this.dateTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimeStart.Location = new System.Drawing.Point(45, 19);
-            this.dateTimeStart.Name = "dateTimeStart";
-            this.dateTimeStart.Size = new System.Drawing.Size(200, 20);
-            this.dateTimeStart.TabIndex = 0;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.btnSendMail);
-            this.groupBox5.Controls.Add(this.txtMailDestination);
-            this.groupBox5.Location = new System.Drawing.Point(169, 46);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(326, 49);
-            this.groupBox5.TabIndex = 5;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "E-mail below playlist";
-            // 
-            // btnSendMail
-            // 
-            this.btnSendMail.Enabled = false;
-            this.btnSendMail.Location = new System.Drawing.Point(184, 19);
-            this.btnSendMail.Name = "btnSendMail";
-            this.btnSendMail.Size = new System.Drawing.Size(75, 23);
-            this.btnSendMail.TabIndex = 1;
-            this.btnSendMail.Text = "Send e-mail";
-            this.btnSendMail.UseVisualStyleBackColor = true;
-            this.btnSendMail.Click += new System.EventHandler(this.btnSendMail_Click_1);
-            // 
-            // txtMailDestination
-            // 
-            this.txtMailDestination.Location = new System.Drawing.Point(7, 19);
-            this.txtMailDestination.Name = "txtMailDestination";
-            this.txtMailDestination.Size = new System.Drawing.Size(170, 20);
-            this.txtMailDestination.TabIndex = 0;
-            this.txtMailDestination.Text = "muziek@radioscorpio.be";
-            this.txtMailDestination.TextChanged += new System.EventHandler(this.txtMailDestination_TextChanged);
-            // 
-            // dateTimeEnd
-            // 
-            this.dateTimeEnd.CustomFormat = "dd-MM-yyyy    HH:mm";
-            this.dateTimeEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimeEnd.Location = new System.Drawing.Point(295, 19);
-            this.dateTimeEnd.Name = "dateTimeEnd";
-            this.dateTimeEnd.Size = new System.Drawing.Size(200, 20);
-            this.dateTimeEnd.TabIndex = 1;
-            // 
-            // btnShowPlayList
-            // 
-            this.btnShowPlayList.Location = new System.Drawing.Point(12, 46);
-            this.btnShowPlayList.Name = "btnShowPlayList";
-            this.btnShowPlayList.Size = new System.Drawing.Size(119, 49);
-            this.btnShowPlayList.TabIndex = 4;
-            this.btnShowPlayList.Text = "Show Playlist";
-            this.btnShowPlayList.UseVisualStyleBackColor = true;
-            this.btnShowPlayList.Click += new System.EventHandler(this.btnShowPlayList_Click_1);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "From";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(259, 25);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(20, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Till";
+            this.tmrPoll.Tick += new System.EventHandler(this.tmrPoll_Tick);
             // 
             // Form1
             // 
-            this.AcceptButton = this.btnShowPlayList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(505, 408);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.grpPlaylist);
+            this.ClientSize = new System.Drawing.Size(505, 115);
             this.Controls.Add(this.grpsent);
             this.Name = "Form1";
-            this.Text = "Scorpio\'s Icecast Tool";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.Text = "Waiting for CurrentSong.Txt to become available";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.grpsent.ResumeLayout(false);
             this.grpsent.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.grpPlaylist.ResumeLayout(false);
-            this.groupBoxPlaylist.ResumeLayout(false);
-            this.groupBoxPlaylist.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.IO.FileSystemWatcher fileSystemWatcher1;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Panel grpPlaylist;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button btnSendMail;
-        private System.Windows.Forms.TextBox txtMailDestination;
-        private System.Windows.Forms.Button btnShowPlayList;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DateTimePicker dateTimeEnd;
-        private System.Windows.Forms.DateTimePicker dateTimeStart;
         private System.Windows.Forms.GroupBox grpsent;
         private System.Windows.Forms.CheckBox ckSongFromZaraToIcecast;
         private System.Windows.Forms.Label lblDateTime;
         private System.Windows.Forms.TextBox txtSongSendFromZara;
-        private System.Windows.Forms.GroupBox groupBoxPlaylist;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Timer tmrPoll;
     }
 }
 

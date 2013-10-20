@@ -19,10 +19,18 @@ namespace MetaData
                 LastErrorSend = DateTime.Now;
             }
         }
+      
         public static void HandleTheError(string error)
         {
             ErrorLog.LogError(error);
             SendMail.SendEmailToAdmin("ERROR", error);
+            LastErrorSend = DateTime.Now;
+        }
+
+        public static void HandleTheError(string error, string receipient)
+        {
+            ErrorLog.LogError(error);
+            SendMail.SendEmail("error", error, receipient);
             LastErrorSend = DateTime.Now;
         }
     }

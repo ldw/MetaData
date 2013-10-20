@@ -15,24 +15,37 @@ namespace MetaData
 {
     public partial class Form1 : Form
     {
-        FileSystemWatcher myFileWatcher = new FileSystemWatcher();
-        IDAL myDAL = new SQLiteDAL();
-        bool myWatcherEnabled = false;
+        private IDAL myDAL = new OnlineDAL();
+        FileSystemWatcher myFileWatcher;
+        private string ReadSong = "";
+        private DateTime LastUpdate = DateTime.Now;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void WatchFile()
         {
-            //todo: zara path \\studio1\ZaraRadio
-            timer1.Interval = Settings.Default.TimerCheckZaraFileExistsInMS;
-            timer1.Enabled = true;
-            CheckSettingsOK();
+            if (File.Exists(@Settings.Default.ZaraPath))
+            {
+                myFileWatcher = new FileSystemWatcher();
+                ConfigWatcher();
+                this.Text = "Scorpio's Icecast Tool";
+                ckSongFromZaraToIcecast.Checked = true;
+                tmrPoll.Interval = Settings.Default.TimerCheckZaraFileExistsInMS;
+                if (!tmrPoll.Enabled)
+                    tmrPoll.Start();
+            }
+            else
+            {
+                System.Threading.Thread.Sleep(Settings.Default.TimerCheckZaraFileExistsInMS); //Wait for retry x sec.
+                WatchFile();
+            }
+
         }
 
-        private void WatchFile()
+        private void ConfigWatcher()
         {
             myFileWatcher.Path = Path.GetDirectoryName(@Settings.Default.ZaraPath);
             myFileWatcher.NotifyFilter = NotifyFilters.LastWrite;
@@ -43,27 +56,20 @@ namespace MetaData
 
         private void OnSongChanged(object source, FileSystemEventArgs e)
         {
-            string song = "";
-            try
+            string song = Helper.GetSongFromZaraTxt(@Settings.Default.ZaraPath);
+            if(song!=ReadSong)
             {
-                myFileWatcher.EnableRaisingEvents = false;
-                song = Helper.GetSongFromZaraTxt(@Settings.Default.ZaraPath);
-            }
-            catch (Exception ex)
-            {
-                ShowInfoOnForm(ex.Message);
-                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.ToString());
-            }
-            finally
-            {
-                myFileWatcher.EnableRaisingEvents = true;
-            }
-            if (!Helper.IsJingle(song, Settings.Default.WordsToFilterOut) && !Helper.IsIpOrNumber(song)) {
-                myDAL.InsertSong(song);
-                UpdateMetadata((song));
-            }
-            else{
-                UpdateMetadata(Settings.Default.IcecastDefaultText);
+                ReadSong = song;
+                LastUpdate = DateTime.Now;
+                if (!Helper.IsJingle(song, Settings.Default.WordsToFilterOut) && !Helper.IsIpOrNumber(song))
+                {
+                    myDAL.InsertSong(song);
+                    UpdateMetadata((song));
+                }
+                else
+                {
+                    UpdateMetadata(Settings.Default.IcecastDefaultText);
+                }
             }
         }
 
@@ -148,63 +154,6 @@ namespace MetaData
             }
         }
 
-        private void EnableSendMailButton() {
-            btnSendMail.Enabled = (dataGridView1.Rows.Count > 0) && Helper.IsValidEmail(txtMailDestination.Text);
-        }
-
-        private void CheckSettingsOK()
-        {
-            try
-            {
-                if (File.Exists(@Settings.Default.ZaraPath))
-                {
-                    myWatcherEnabled = true;
-                    WatchFile();
-                }
-                else
-                {
-                    ShowInfoOnForm(@Settings.Default.ZaraPath + " not found! Waiting one minute...");
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.Message);
-            }
-            ckSongFromZaraToIcecast.Checked = myWatcherEnabled;
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            CheckZaraFileAccessible();
-        }
-
-        private void CheckZaraFileAccessible()
-        {
-            try
-            {
-                if (!File.Exists(@Settings.Default.ZaraPath))
-                {
-                    ckSongFromZaraToIcecast.Checked = false;
-                    string error = Settings.Default.ZaraPath + " is not accessible!";
-                    ShowInfoOnForm(error);
-                    ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(error);
-                }
-                else
-                {
-                    ckSongFromZaraToIcecast.Checked = true;
-                    if (!myWatcherEnabled)
-                    {
-                        myWatcherEnabled = true;
-                        ShowInfoOnForm("");
-                        WatchFile();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.HandleTheErrorIfTimeIntervalLongEnough(ex.Message);
-            }
-        }
 
         private void button1_Click(object sender, EventArgs e) //testbutton
         {
@@ -260,36 +209,41 @@ namespace MetaData
             return dialogResult;
         }
 
-        private void btnShowPlayList_Click_1(object sender, EventArgs e)
+
+        private void Form1_Shown(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
-            DataTable playlist = myDAL.GetPlayList(dateTimeStart.Value, dateTimeEnd.Value);
-            dataGridView1.DataSource = playlist;
-            EnableSendMailButton();
-            this.Cursor = Cursors.Default;
+            WatchFile();
         }
 
-        private void btnSendMail_Click_1(object sender, EventArgs e)
+        private void tmrPoll_Tick(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
-            try
+            if (!File.Exists(@Settings.Default.ZaraPath))
             {
-                string message = Helper.DgVtoString(dataGridView1, " - ");
-                SendMail.SendEmail("Playlist from " + dateTimeStart.Value.ToString() + " till " + dateTimeEnd.Value.ToString(), message, txtMailDestination.Text);
-                txtMailDestination.Text = "";
-                this.Cursor = Cursors.Default;
-                MessageBox.Show("Sent!");
+                setIcecastDefaultText();
+
+                ErrorLog.LogError("CurrentSong.Txt not available " + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString());
+                ckSongFromZaraToIcecast.Enabled = false;
+                this.Text = "Waiting for CurrentSong.txt to become available";
+                WatchFile();
             }
-            catch (Exception xe)
+            else
             {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show(xe.Message);
+                if(ReadSong != Settings.Default.IcecastDefaultText)
+                {
+                    //als meer dan 10? minuten, zet icecast default tekst
+                    TimeSpan interval = DateTime.Now - LastUpdate;
+                    if(interval.TotalMinutes > 10)
+                    {
+                        setIcecastDefaultText();
+                    }
+                }
             }
         }
-
-        private void txtMailDestination_TextChanged(object sender, EventArgs e)
+        private  void setIcecastDefaultText()
         {
-            EnableSendMailButton();
+            ReadSong = Settings.Default.IcecastDefaultText;
+            LastUpdate = DateTime.Now;
+            UpdateMetadata(Settings.Default.IcecastDefaultText);
         }
     }
 }
